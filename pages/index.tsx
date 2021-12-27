@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import { firestore } from '../firebase/clientApp'
+import styles from '@styles/Home.module.css'
+import { firestore } from '@utils/clientApp'
 import { useEffect, useState } from 'react'
 import {
   collection,
@@ -15,35 +15,19 @@ import {
   // getDocs,
 } from '@firebase/firestore'
 
+// Import useAuth from context
+import { useAuth } from '@context/auth'
+
 const Home: NextPage = () => {
   const postsCollection = collection(firestore, 'posts')
 
   const [posts, setPosts] = useState<QueryDocumentSnapshot<DocumentData>[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  // const getPosts = async () => {
-  //   // construct a query to get up to 10 undone todos
-  //   const postsQuery = query(postsCollection, limit(10))
-  //   // get the todos
-  //   const querySnapshot = await getDocs(postsQuery)
-
-  //   // map through todos adding them to an array
-  //   const result: QueryDocumentSnapshot<DocumentData>[] = []
-  //   querySnapshot.forEach((snapshot) => {
-  //     result.push(snapshot)
-  //   })
-  //   // set it to state
-  //   setPosts(result)
-  // }
+  // Destructure login and logout functions.
+  const { login, logout } = useAuth()
 
   useEffect(() => {
-    // get the todos
-    // getPosts()
-    // // reset loading
-    // setTimeout(() => {
-    //   setLoading(false)
-    // }, 2000)
-
     const q = query(postsCollection, limit(10))
 
     const unsubscribe = onSnapshot(q, (snapshot: QuerySnapshot) => {
@@ -66,6 +50,10 @@ const Home: NextPage = () => {
       </Head>
       <main className={styles.main}>
         <h1 className={styles.title}>List of Posts</h1>
+        <div className={styles.cardActions}>
+          <button onClick={login}> Login </button>
+          <button onClick={logout}> Logout </button>
+        </div>
         <div className={styles.grid}>
           {loading ? (
             <div className={styles.card}>
