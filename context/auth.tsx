@@ -16,15 +16,7 @@ import { auth } from '@utils/clientApp'
 import nookies from 'nookies'
 // import { firebaseAdmin } from '@utils/adminApp'
 import { createUser } from '../pages/api/db'
-
-type IUser = {
-  uid: string
-  email: string
-  name: string
-  provider: string
-  photoUrl: string
-  token: string
-}
+import { IUser } from 'types'
 
 type authContextType = {
   user: IUser | null

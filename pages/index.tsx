@@ -14,6 +14,7 @@ import {
   Button,
   Flex,
   // Divider,
+  Link,
   chakra,
   Grid,
   Text,
@@ -141,7 +142,7 @@ const Home = ({
             posts.map((post: DocumentData) => {
               return (
                 <Stack
-                  key={post.title}
+                  key={post.id}
                   spacing={4}
                   isInline
                   alignItems="center"
@@ -150,8 +151,10 @@ const Home = ({
                 >
                   {/* <Avatar name={post.} src={tweet.author.image} /> */}
                   <Stack>
-                    <Text>{post.title}</Text>
-                    <Text fontWeight="bold">{post.description}</Text>
+                    <Link href={`/posts/${post.id}`}>
+                      <Text>{post.title}</Text>
+                      <Text fontWeight="bold">{post.description}</Text>
+                    </Link>
                   </Stack>
                 </Stack>
               )
