@@ -1,19 +1,53 @@
 import React from 'react'
 import nookies from 'nookies'
-import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next'
-import { useAuth } from '@context/auth'
-import { firebaseAdmin } from '@utils/adminApp'
+import { GetServerSidePropsContext } from 'next'
+import { useRouter } from 'next/router'
 
-const Profile = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => {
-  const auth = useAuth()
-  console.log(auth)
+import { firebaseAdmin } from '@utils/adminApp'
+import ProfileForm from '@components/forms/ProfileForm'
+import ProfileCard from '@components/ProfileCard'
+import { Flex, Box, Spinner, useToast } from '@chakra-ui/react'
+
+import { getUser, updateUser } from './api/db'
+import { IProfile } from '../types'
+
+const Profile = (props: { userInfo: IProfile }) => {
+  const { userInfo } = props
+  console.log(userInfo)
+  const toast = useToast()
+  const router = useRouter()
+
+  const refreshData = () => {
+    //Hacky method of refreshing the page using server side data
+    router.replace(router.asPath)
+  }
+
+  const handleSaveProfile = async (data: {
+    uid: string
+    userName: string
+    userSkills?: { label: string; value: string }[]
+    userBio?: string
+  }) => {
+    console.log(data)
+    await updateUser(data?.uid, {
+      ...data,
+    }).then((res: { message: string } | undefined) => {
+      toast({ title: res?.message })
+      refreshData()
+    })
+  }
+
   return (
-    <div>
-      Profile<p>{props.message}</p>
-      <button onClick={auth.logout}> Sign out </button>
-    </div>
+    <Box>
+      {!userInfo ? (
+        <Spinner />
+      ) : (
+        <Flex w="full">
+          <ProfileCard data={userInfo} />
+          <ProfileForm initialValues={userInfo} onSave={handleSaveProfile} />
+        </Flex>
+      )}
+    </Box>
   )
 }
 
@@ -26,9 +60,13 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     const { uid, email } = token
 
     // FETCH STUFF HERE!! 🚀
-
+    const userInfo = await getUser(uid)
+    // console.log(userInfo)
     return {
-      props: { message: `Your email is ${email} and your UID is ${uid}.` },
+      props: {
+        message: `Your email is ${email} and your UID is ${uid}.`,
+        userInfo,
+      },
     }
   } catch (err) {
     // either the `token` cookie didn't exist

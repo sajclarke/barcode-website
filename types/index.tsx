@@ -15,7 +15,17 @@ export interface IUser {
   name: string
   provider: string
   photoUrl: string
-  token: string
+  skills?: string[]
+}
+
+export interface IProfile {
+  uid: string
+  email: string
+  userName: string
+  provider: string
+  photoUrl: string
+  userBio?: string
+  userSkills?: { label: string; value: string }[]
 }
 
 export interface IPost {

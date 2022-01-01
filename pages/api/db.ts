@@ -8,9 +8,11 @@ import {
   // where,
   doc,
   addDoc,
+  updateDoc,
   setDoc,
   getDocs,
   getDoc,
+  // serverTimestamp,
 } from 'firebase/firestore'
 import { IPost } from '../../types'
 
@@ -19,15 +21,65 @@ type UserData = {
   name: string
   provider: string
   photoUrl: string
+  skills?: string[]
+  bio?: string
+}
+
+export const getUser = async (uid: string) => {
+  //Create user if they do not already exist
+  try {
+    const docSnap = await getDoc(doc(firestore, 'users', uid))
+    // console.log('User created with ID: ', docRef)
+    if (docSnap.exists()) {
+      // console.log('Document data:', docSnap.data())
+      return { ...docSnap.data() }
+    } else {
+      // doc.data() will be undefined in this case
+      console.log('Could not find user!')
+    }
+  } catch (e) {
+    console.error('Error finding user: ', e)
+  }
 }
 
 export const createUser = async (uid: string, data: UserData) => {
   //Create user if they do not already exist
   try {
-    const docRef = await setDoc(doc(firestore, 'users', uid), { uid, ...data })
-    console.log('Document written with ID: ', docRef)
+    const docSnap = await getDoc(doc(firestore, 'users', uid))
+    // console.log('User created with ID: ', docRef)
+    if (!docSnap.exists()) {
+      await setDoc(doc(firestore, 'users', uid), { uid, ...data })
+    }
+    // const docRef =
+    // console.log('User created with ID: ', docRef)
+    return { message: 'User created successfully' }
   } catch (e) {
     console.error('Error adding document: ', e)
+  }
+}
+
+export const updateUser = async (
+  uid: string | undefined,
+  data: {
+    uid: string
+    userName: string
+    userSkills?: { label: string; value: string }[]
+    userBio?: string
+  }
+) => {
+  if (!uid) {
+    return
+  }
+  //Create user if they do not already exist
+  try {
+    await updateDoc(doc(firestore, 'users', uid), {
+      ...data,
+      // updatedAt: serverTimestamp(),
+    })
+    // console.log('Document updated with ID: ', docRef)
+    return { message: 'User updated successfully' }
+  } catch (e) {
+    console.error('Error updated document: ', e)
   }
 }
 
