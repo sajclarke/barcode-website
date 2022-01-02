@@ -18,7 +18,7 @@ import nookies from 'nookies'
 import { createUser } from '../pages/api/db'
 import { IUser } from 'types'
 
-import Loading from '../components/Loading'
+import Loading from '@components/Loading'
 
 type authContextType = {
   user: IUser | null
