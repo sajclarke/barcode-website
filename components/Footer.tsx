@@ -28,7 +28,7 @@ export default function SmallWithLogoLeft() {
         align={{ base: 'center', md: 'center' }}
       >
         <Text fontSize={'sm'}>
-          © {new Date().getFullYear()} Barcode Developer Network
+          © {new Date().getFullYear()} Made to support Caribbean developers
         </Text>
         <Button
           variant={'solid'}
@@ -38,6 +38,9 @@ export default function SmallWithLogoLeft() {
           leftIcon={<FaWhatsapp />}
         >
           Join Whatsapp
+        </Button>
+        <Button variant={'link'} size={'sm'} mr={4}>
+          View Github
         </Button>
       </Container>
     </Box>
