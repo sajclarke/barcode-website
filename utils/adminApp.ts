@@ -10,7 +10,9 @@ const serviceAccount = JSON.parse(
 
 if (!firebaseAdmin.apps.length) {
   firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert(serviceAccount),
+    credential: firebaseAdmin.credential.cert(
+      serviceAccount.replace(/\\n/g, '\n')
+    ),
     databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
   })
 }
