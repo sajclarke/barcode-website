@@ -14,6 +14,7 @@ import Select, { MultiValue } from 'react-select'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { getLanguages } from 'pages/api/db'
 
 // import { IUser } from '../../types'
 
@@ -43,6 +44,9 @@ interface IOptions {
 
 const ProfileForm = (props: FormProps) => {
   // console.log(props.initialValues)
+
+  const [languages, setLanguages] = React.useState<string[]>([])
+
   const { uid, name, bio, skills } = props.initialValues
   const schema = yup.object().shape({
     userName: yup
@@ -71,15 +75,11 @@ const ProfileForm = (props: FormProps) => {
     props.onSave(formData)
   }
 
-  const languages: string[] = [
-    'php',
-    'reactjs',
-    'javascript',
-    'nodejs',
-    'c#',
-    'c++',
-    'sql',
-  ]
+  React.useEffect(() => {
+    const langOptions = getLanguages()
+    // console.log(langOptions)
+    setLanguages(langOptions)
+  }, [])
 
   const languageOptions: IOptions[] = languages.map((option) => ({
     label: option,

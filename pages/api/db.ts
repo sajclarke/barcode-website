@@ -16,6 +16,8 @@ import {
 } from 'firebase/firestore'
 import { IPost } from '../../types'
 
+import languages from './data/programminglanguages.json'
+
 type UserData = {
   email: string
   name: string
@@ -23,6 +25,10 @@ type UserData = {
   photoUrl: string
   skills?: string[]
   bio?: string
+}
+
+export const getLanguages = () => {
+  return languages
 }
 
 export const getUser = async (uid: string) => {
