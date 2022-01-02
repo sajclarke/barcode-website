@@ -18,8 +18,11 @@ import nookies from 'nookies'
 import { createUser } from '../pages/api/db'
 import { IUser } from 'types'
 
+import Loading from '../components/Loading'
+
 type authContextType = {
   user: IUser | null
+  loading: boolean
   login: () => void
   logout: () => void
 }
@@ -30,6 +33,7 @@ type Props = {
 
 const authContextDefaultValues: authContextType = {
   user: null,
+  loading: true,
   login: () => {
     // any clear comments.
   },
@@ -49,9 +53,11 @@ export function useAuth() {
 
 export function AuthProvider({ children }: Props) {
   const [user, setUser] = useState<IUser | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
 
   const formatUser = async (user: DocumentData) => {
     const token = await user.getIdToken()
+    // console.log(user)
     return {
       uid: user.uid,
       email: user.email,
@@ -67,6 +73,7 @@ export function AuthProvider({ children }: Props) {
       if (!rawUser) {
         setUser(null)
         nookies.set(undefined, 'token', '', { path: '/' })
+        setLoading(false)
       } else {
         // const token = await user.getIdToken()
         // console.log(user)
@@ -74,7 +81,8 @@ export function AuthProvider({ children }: Props) {
         const { token, ...userWithoutToken } = user
 
         createUser(user.uid, userWithoutToken)
-        setUser(user)
+        setUser(userWithoutToken)
+        setLoading(false)
         nookies.set(undefined, 'token', token, { path: '/' })
       }
     })
@@ -121,9 +129,13 @@ export function AuthProvider({ children }: Props) {
 
   const value = {
     user,
+    loading,
     login,
     logout,
   }
+
+  if (loading) return <Loading />
+
   return (
     <>
       <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
