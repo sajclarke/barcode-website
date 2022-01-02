@@ -20,7 +20,14 @@ import {
 } from '@chakra-ui/react'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { useAuth } from '@context/auth'
-const NavLink = ({ children }: { children: ReactNode }) => (
+
+const NavLink = ({
+  children,
+  linkTo,
+}: {
+  children: ReactNode
+  linkTo: string
+}) => (
   <Link
     px={2}
     py={1}
@@ -29,7 +36,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href={'#'}
+    href={`/${linkTo.toLowerCase()}`}
   >
     {children}
   </Link>
@@ -41,7 +48,7 @@ export default function Navbar() {
   // Destructure login and logout functions.
   const { login, logout, user } = useAuth()
 
-  const Links = ['About', 'FAQ']
+  const Links = ['About']
 
   return (
     <>
@@ -69,7 +76,9 @@ export default function Navbar() {
                 display={{ base: 'none', md: 'flex' }}
               >
                 {Links.map((link) => (
-                  <NavLink key={link}>{link}</NavLink>
+                  <NavLink key={link} linkTo={link}>
+                    {link}
+                  </NavLink>
                 ))}
               </HStack>
             </HStack>

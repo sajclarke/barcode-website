@@ -19,7 +19,6 @@ export default function Layout({ children }: LayoutProps) {
         flex="1"
         spacing={4}
         justify={{ base: 'center', md: 'space-between' }}
-        align={{ base: 'center', md: 'center' }}
       >
         {children}
       </Container>
