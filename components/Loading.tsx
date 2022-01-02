@@ -4,7 +4,7 @@ const Loading: React.FC = () => {
   return (
     <Center h="100vh" color="gray.800">
       <Stack spacing={4}>
-        <Text>Loading....</Text>
+        <Text>One moment please ....</Text>
       </Stack>
     </Center>
   )
