@@ -27,9 +27,9 @@ type FormValues = {
 type FormProps = {
   initialValues: {
     uid: string
-    userName: string
-    userSkills?: { label: string; value: string }[]
-    userBio?: string
+    name: string
+    skills?: { label: string; value: string }[]
+    bio?: string
   }
   onSave: (data: FormValues) => {
     //something goes here
@@ -42,8 +42,8 @@ interface IOptions {
 }
 
 const ProfileForm = (props: FormProps) => {
-  console.log(props.initialValues)
-  const { uid } = props.initialValues
+  // console.log(props.initialValues)
+  const { uid, name, bio, skills } = props.initialValues
   const schema = yup.object().shape({
     userName: yup
       .string()
@@ -61,13 +61,13 @@ const ProfileForm = (props: FormProps) => {
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     mode: 'onChange',
-    defaultValues: { ...props?.initialValues },
+    defaultValues: { userName: name, userBio: bio, userSkills: skills },
   })
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    setTimeout(() => {
-      console.log('timeout')
-    }, 3000)
-    const formData = { ...data, uid }
+    const formData = {
+      ...data,
+      uid,
+    }
     props.onSave(formData)
   }
 

@@ -14,7 +14,7 @@ import {
 import { IProfile } from '../types'
 
 const ProfileCard = (props: { data: IProfile | undefined }) => {
-  console.log(props.data)
+  // console.log(props.data)
   const { data } = props
   return (
     <Box
@@ -28,7 +28,7 @@ const ProfileCard = (props: { data: IProfile | undefined }) => {
       <Avatar
         size={'xl'}
         src={data?.photoUrl}
-        alt={data?.userName}
+        alt={data?.name}
         mb={4}
         pos={'relative'}
         _after={{
@@ -44,7 +44,7 @@ const ProfileCard = (props: { data: IProfile | undefined }) => {
         }}
       />
       <Heading fontSize={'2xl'} fontFamily={'body'}>
-        {data?.userName}
+        {data?.name}
       </Heading>
       {/* <Text fontWeight={600} color={'gray.500'} mb={4}>
         @lindsey_jam3s
@@ -54,11 +54,11 @@ const ProfileCard = (props: { data: IProfile | undefined }) => {
         color={useColorModeValue('gray.700', 'gray.400')}
         px={3}
       >
-        {data?.userBio}
+        {data?.bio}
       </Text>
 
       <Wrap align={'center'} justify={'center'} direction={'row'} m={2}>
-        {data?.userSkills?.map((skill) => (
+        {data?.skills?.map((skill) => (
           <Badge
             key={skill.label}
             px={2}

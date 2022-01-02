@@ -62,9 +62,9 @@ export const updateUser = async (
   uid: string | undefined,
   data: {
     uid: string
-    userName: string
-    userSkills?: { label: string; value: string }[]
-    userBio?: string
+    name: string
+    skills?: { label: string; value: string }[]
+    bio?: string
   }
 ) => {
   if (!uid) {

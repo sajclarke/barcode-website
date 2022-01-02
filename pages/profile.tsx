@@ -6,14 +6,15 @@ import { useRouter } from 'next/router'
 import { firebaseAdmin } from '@utils/adminApp'
 import ProfileForm from '@components/forms/ProfileForm'
 import ProfileCard from '@components/ProfileCard'
-import { Flex, Box, Spinner, useToast } from '@chakra-ui/react'
+import Loading from '@components/Loading'
+import { Flex, useToast } from '@chakra-ui/react'
 
 import { getUser, updateUser } from './api/db'
 import { IProfile } from '../types'
 
 const Profile = (props: { userInfo: IProfile }) => {
   const { userInfo } = props
-  console.log(userInfo)
+  // console.log(userInfo)
   const toast = useToast()
   const router = useRouter()
 
@@ -30,7 +31,10 @@ const Profile = (props: { userInfo: IProfile }) => {
   }) => {
     console.log(data)
     await updateUser(data?.uid, {
-      ...data,
+      uid: data?.uid,
+      name: data?.userName,
+      bio: data?.userBio,
+      skills: data?.userSkills,
     }).then((res: { message: string } | undefined) => {
       toast({ title: res?.message })
       refreshData()
@@ -38,16 +42,16 @@ const Profile = (props: { userInfo: IProfile }) => {
   }
 
   return (
-    <Box>
+    <>
       {!userInfo ? (
-        <Spinner />
+        <Loading />
       ) : (
         <Flex w="full">
           <ProfileCard data={userInfo} />
           <ProfileForm initialValues={userInfo} onSave={handleSaveProfile} />
         </Flex>
       )}
-    </Box>
+    </>
   )
 }
 

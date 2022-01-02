@@ -21,11 +21,11 @@ export interface IUser {
 export interface IProfile {
   uid: string
   email: string
-  userName: string
+  name: string
   provider: string
   photoUrl: string
-  userBio?: string
-  userSkills?: { label: string; value: string }[]
+  bio?: string
+  skills?: { label: string; value: string }[]
 }
 
 export interface IPost {
