@@ -14,6 +14,7 @@ import {
   Badge,
   chakra,
   useColorModeValue,
+  Link,
   // Grid,
   Text,
   // GridItem,
@@ -65,10 +66,15 @@ const Home = ({
               A public listing of software developers throughout the Caribbean
             </chakra.p>
           </Flex>
-
-          <Button colorScheme="green" size="md" leftIcon={<FaWhatsapp />}>
-            Join Whatsapp
-          </Button>
+          <Link
+            external
+            href="https://chat.whatsapp.com/KieYFnuqWL7FAQWFYzsp73"
+            _hover={{ textDecoration: 'none' }}
+          >
+            <Button colorScheme="green" size="md" leftIcon={<FaWhatsapp />}>
+              Join Whatsapp
+            </Button>
+          </Link>
         </Flex>
 
         <Text as="h2" fontSize="3xl" fontWeight="700">
