@@ -1,89 +1,49 @@
-// import type { NextPage } from 'next'
-import {
-  InferGetServerSidePropsType,
-  // GetServerSidePropsContext,
-  GetServerSideProps,
-} from 'next'
-
+import { InferGetServerSidePropsType, GetServerSideProps } from 'next'
+import * as React from 'react'
 import Head from 'next/head'
 import {
-  Box,
-  VStack,
+  // Box,
+  // Input,
+  // InputGroup,
+  // InputLeftElement,
   Stack,
-  // Avatar,
+  Avatar,
   Button,
   Flex,
-  // Divider,
-  Link,
+  Wrap,
+  Badge,
   chakra,
-  Grid,
+  useColorModeValue,
+  // Grid,
   Text,
-  GridItem,
-  Container,
+  // GridItem,
+  // Container,
 } from '@chakra-ui/react'
-// import { firestore } from '@utils/clientApp'
-// import { useEffect, useState } from 'react'
-import {
-  // collection,
-  // QueryDocumentSnapshot,
-  // onSnapshot,
-  // QuerySnapshot,
-  DocumentData,
-  // query,
-  // // where,
-  // limit,
-  // // getDocs,
-} from '@firebase/firestore'
-import { getPosts } from './api/db'
+// import { SearchIcon } from '@chakra-ui/icons'
+
+import { FaWhatsapp } from 'react-icons/fa'
+import { DocumentData } from '@firebase/firestore'
+import { getAllUsers } from './api/db'
+// import { IUser } from '../types/'
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const data = await getPosts()
+  const data = await getAllUsers()
 
-  // console.log('response', data)
   return {
-    props: { threads: data }, // will be passed to the page component as props
+    props: { members: data }, // will be passed to the page component as props
   }
 }
 
 const Home = ({
-  threads,
+  members,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  // console.log(threads)
-  // const postsCollection = collection(firestore, 'posts')
-
-  // const [posts, setPosts] = useState<QueryDocumentSnapshot<DocumentData>[]>([])
-  // const [loading, setLoading] = useState<boolean>(true)
-
-  // Destructure login and logout functions.
-  // const { login, logout } = useAuth()
-
-  // useEffect(() => {
-  //   const q = query(postsCollection, limit(10))
-
-  //   const unsubscribe = onSnapshot(q, (snapshot: QuerySnapshot) => {
-  //     setPosts(
-  //       snapshot.docs.map((doc: DocumentData) => ({
-  //         ...doc.data(),
-  //         id: doc.id,
-  //       }))
-  //     )
-  //     setLoading(false)
-  //   })
-  //   return () => unsubscribe()
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
-
-  // const handleAddPost = async () => {
-  //   await addPost({
-  //     title: 'Lorem Ipsum dolor',
-  //     description: 'This is a description',
-  //     createdAt: new Date().toLocaleString(),
-  //   })
+  // const [searchString, setSearchString] = React.useState<string>('')
+  // const handleFieldChange = (e: React.FormEvent<HTMLInputElement>) => {
+  //   console.log(e.currentTarget.value)
+  //   setSearchString(e.currentTarget.value)
   // }
 
-  // useEffect(() => {
-  //   handleAddPost()
-  // }, [])
+  const buttonColorMode = useColorModeValue('gray.100', 'gray.800')
 
   return (
     <div>
@@ -94,65 +54,83 @@ const Home = ({
       </Head>
 
       <main>
-        <Box as={Container} maxW="7xl" my={6} p={4} borderBottomWidth={1}>
-          <Grid
-            templateColumns={{
-              base: 'repeat(1, 1fr)',
-              sm: 'repeat(2, 1fr)',
-              md: 'repeat(2, 1fr)',
-            }}
-            gap={4}
-          >
-            <GridItem colSpan={1}>
-              <VStack alignItems="flex-start" spacing="20px">
-                <chakra.h2 fontSize="3xl" fontWeight="700">
-                  Medium length title
-                </chakra.h2>
-                <Button colorScheme="green" size="md">
-                  Join Whatsapp
-                </Button>
-              </VStack>
-            </GridItem>
-            <GridItem>
-              <Flex>
-                <chakra.p>
-                  Provide your customers a story they would enjoy keeping in
-                  mind the objectives of your website. Pay special attention to
-                  the tone of voice.
-                </chakra.p>
-              </Flex>
-            </GridItem>
-          </Grid>
-        </Box>
-        <h1>Discussions</h1>
+        <Flex
+          direction={{ base: 'column', md: 'row' }}
+          justifyContent="space-between"
+          alignItems="center"
+          mb="6"
+        >
+          <Flex>
+            <chakra.p p="10">
+              A public listing of software developers throughout the Caribbean
+            </chakra.p>
+          </Flex>
 
+          <Button colorScheme="green" size="md" leftIcon={<FaWhatsapp />}>
+            Join Whatsapp
+          </Button>
+        </Flex>
+
+        <Text as="h2" fontSize="3xl" fontWeight="700">
+          Members
+        </Text>
+        {/* <Stack spacing={4} py="6">
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents="none"
+              children={<SearchIcon color="gray.300" />}
+            />
+            <Input
+              placeholder="Search for a developer by typing the skill you're looking for"
+              onChange={handleFieldChange}
+            />
+          </InputGroup>
+        </Stack> */}
         <div>
-          {threads.length === 0 ? (
+          {members?.length === 0 ? (
             <div>
-              <h2>Nothing to see here right now</h2>
-              {/* <p>
-                Consider adding a todo from <a href="/add-todo">here</a>
-              </p> */}
+              <h2>There are no members</h2>
             </div>
           ) : (
-            threads.map((post: DocumentData) => {
+            members?.map((member: DocumentData) => {
               return (
-                <Stack
-                  key={post.id}
+                <Flex
+                  key={member.uid}
                   spacing={4}
-                  isInline
+                  direction={{ base: 'column', md: 'row' }}
                   alignItems="center"
+                  justifyContent={'space-between'}
                   p={4}
                   borderBottomWidth={1}
                 >
-                  {/* <Avatar name={post.} src={tweet.author.image} /> */}
-                  <Stack>
-                    <Link href={`/posts/${post.id}`}>
-                      <Text>{post.title}</Text>
-                      <Text fontWeight="bold">{post.description}</Text>
-                    </Link>
+                  <Stack isInline>
+                    <Avatar name={member.name} src={member.photoUrl} />
+                    <Stack>
+                      <Text>{member.name}</Text>
+                      <Text fontWeight="bold">{member.email}</Text>
+                    </Stack>
                   </Stack>
-                </Stack>
+                  <Wrap
+                    align={'center'}
+                    justify={'center'}
+                    direction={'row'}
+                    m={2}
+                  >
+                    {member?.skills?.map(
+                      (skill: { label: string; value: string }) => (
+                        <Badge
+                          key={skill.label}
+                          px={2}
+                          py={1}
+                          bg={buttonColorMode}
+                          fontWeight={'400'}
+                        >
+                          #{skill.value}
+                        </Badge>
+                      )
+                    )}
+                  </Wrap>
+                </Flex>
               )
             })
           )}

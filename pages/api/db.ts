@@ -14,7 +14,7 @@ import {
   getDoc,
   // serverTimestamp,
 } from 'firebase/firestore'
-import { IPost } from '../../types'
+import { IPost, IUser } from '../../types'
 
 import languages from './data/programminglanguages.json'
 
@@ -31,8 +31,26 @@ export const getLanguages = () => {
   return languages
 }
 
+export const getAllUsers = async () => {
+  try {
+    const q = query(collection(firestore, 'users'))
+    const response: IUser[] = []
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, ' => ', doc.data())
+      const { name, email, photoUrl, provider, skills } = doc.data()
+      response.push({ name, email, photoUrl, provider, skills, uid: doc.id })
+      // res.status(200).json({ ...doc.data() })
+    })
+
+    return response
+  } catch (e) {
+    console.error('Error getting document: ', e)
+  }
+}
+
 export const getUser = async (uid: string) => {
-  //Create user if they do not already exist
   try {
     const docSnap = await getDoc(doc(firestore, 'users', uid))
     // console.log('User created with ID: ', docRef)
