@@ -75,12 +75,10 @@ export function AuthProvider({ children }: Props) {
         nookies.set(undefined, 'token', '', { path: '/' })
         setLoading(false)
       } else {
-        // const token = await user.getIdToken()
-        // console.log(user)
         const user = await formatUser(rawUser)
         const { token, ...userWithoutToken } = user
 
-        createUser(user.uid, userWithoutToken)
+        createUser(user.uid, { ...userWithoutToken, skills: [] })
         setUser(userWithoutToken)
         setLoading(false)
         nookies.set(undefined, 'token', token, { path: '/' })
