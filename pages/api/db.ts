@@ -38,7 +38,7 @@ export const getAllUsers = async () => {
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, ' => ', doc.data())
+      // console.log(doc.id, ' => ', doc.data())
       const { name, email, photoUrl, provider, skills } = doc.data()
       response.push({ name, email, photoUrl, provider, skills, uid: doc.id })
       // res.status(200).json({ ...doc.data() })
