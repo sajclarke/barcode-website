@@ -21,57 +21,57 @@ import {
   GridItem,
   Container,
 } from '@chakra-ui/react'
-import { firestore } from '@utils/clientApp'
-import { useEffect, useState } from 'react'
+// import { firestore } from '@utils/clientApp'
+// import { useEffect, useState } from 'react'
 import {
-  collection,
-  QueryDocumentSnapshot,
-  onSnapshot,
-  QuerySnapshot,
+  // collection,
+  // QueryDocumentSnapshot,
+  // onSnapshot,
+  // QuerySnapshot,
   DocumentData,
-  query,
-  // where,
-  limit,
-  // getDocs,
+  // query,
+  // // where,
+  // limit,
+  // // getDocs,
 } from '@firebase/firestore'
 import { getPosts } from './api/db'
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const data = await getPosts()
 
-  console.log('response', data)
+  // console.log('response', data)
   return {
-    props: { threads: {} }, // will be passed to the page component as props
+    props: { threads: data }, // will be passed to the page component as props
   }
 }
 
 const Home = ({
   threads,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(threads)
-  const postsCollection = collection(firestore, 'posts')
+  // console.log(threads)
+  // const postsCollection = collection(firestore, 'posts')
 
-  const [posts, setPosts] = useState<QueryDocumentSnapshot<DocumentData>[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
+  // const [posts, setPosts] = useState<QueryDocumentSnapshot<DocumentData>[]>([])
+  // const [loading, setLoading] = useState<boolean>(true)
 
   // Destructure login and logout functions.
   // const { login, logout } = useAuth()
 
-  useEffect(() => {
-    const q = query(postsCollection, limit(10))
+  // useEffect(() => {
+  //   const q = query(postsCollection, limit(10))
 
-    const unsubscribe = onSnapshot(q, (snapshot: QuerySnapshot) => {
-      setPosts(
-        snapshot.docs.map((doc: DocumentData) => ({
-          ...doc.data(),
-          id: doc.id,
-        }))
-      )
-      setLoading(false)
-    })
-    return () => unsubscribe()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  //   const unsubscribe = onSnapshot(q, (snapshot: QuerySnapshot) => {
+  //     setPosts(
+  //       snapshot.docs.map((doc: DocumentData) => ({
+  //         ...doc.data(),
+  //         id: doc.id,
+  //       }))
+  //     )
+  //     setLoading(false)
+  //   })
+  //   return () => unsubscribe()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   // const handleAddPost = async () => {
   //   await addPost({
@@ -127,11 +127,7 @@ const Home = ({
         <h1>Discussions</h1>
 
         <div>
-          {loading ? (
-            <div>
-              <h2>Loading</h2>
-            </div>
-          ) : posts.length === 0 ? (
+          {threads.length === 0 ? (
             <div>
               <h2>Nothing to see here right now</h2>
               {/* <p>
@@ -139,7 +135,7 @@ const Home = ({
               </p> */}
             </div>
           ) : (
-            posts.map((post: DocumentData) => {
+            threads.map((post: DocumentData) => {
               return (
                 <Stack
                   key={post.id}
