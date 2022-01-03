@@ -15,7 +15,7 @@ export interface IUser {
   name: string
   provider: string
   photoUrl: string
-  skills?: string[]
+  skills?: { label: string; value: string }[]
 }
 
 export interface IProfile {
