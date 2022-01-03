@@ -23,7 +23,6 @@ import {
 import { SearchIcon } from '@chakra-ui/icons'
 
 import { FaWhatsapp } from 'react-icons/fa'
-import { DocumentData } from '@firebase/firestore'
 import { getAllUsers } from './api/db'
 import { IUser } from '../types/'
 
@@ -102,10 +101,10 @@ const Home = ({
             members
               ?.filter((f: IUser) =>
                 f.skills?.some((o: { label: string; value: string }) =>
-                  o.value.toLowerCase().includes(searchString)
+                  o?.value?.toLowerCase().includes(searchString)
                 )
               )
-              .map((member: DocumentData) => {
+              .map((member: IUser) => {
                 return (
                   <Flex
                     key={member.uid}
