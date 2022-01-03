@@ -1,14 +1,13 @@
 import {
   Box,
   Button,
-  // chakra,
   Container,
-  // Link,
+  Link,
   Stack,
   Text,
   useColorModeValue,
-  // VisuallyHidden,
 } from '@chakra-ui/react'
+
 import { FaWhatsapp } from 'react-icons/fa'
 
 export default function SmallWithLogoLeft() {
@@ -29,18 +28,30 @@ export default function SmallWithLogoLeft() {
         <Text fontSize={'sm'}>
           © {new Date().getFullYear()} Made to support Caribbean developers
         </Text>
-        <Button
-          variant={'solid'}
-          colorScheme={'teal'}
+        <Link
+          external
+          href="https://chat.whatsapp.com/KieYFnuqWL7FAQWFYzsp73"
+          _hover={{ textDecoration: 'none' }}
+        >
+          <Button
+            variant={'solid'}
+            colorScheme={'teal'}
+            size={'sm'}
+            mr={4}
+            leftIcon={<FaWhatsapp />}
+            _hover={{ textDecoration: 'none' }}
+          >
+            Join Whatsapp
+          </Button>
+        </Link>
+        <Link
+          variant={'link'}
           size={'sm'}
           mr={4}
-          leftIcon={<FaWhatsapp />}
+          href="https://github.com/sajclarke/barcode-website"
         >
-          Join Whatsapp
-        </Button>
-        <Button variant={'link'} size={'sm'} mr={4}>
           View Github
-        </Button>
+        </Link>
       </Container>
     </Box>
   )
