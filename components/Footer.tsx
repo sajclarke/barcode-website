@@ -10,7 +10,6 @@ import {
   // VisuallyHidden,
 } from '@chakra-ui/react'
 import { FaWhatsapp } from 'react-icons/fa'
-// import { ReactNode } from 'react'
 
 export default function SmallWithLogoLeft() {
   return (
