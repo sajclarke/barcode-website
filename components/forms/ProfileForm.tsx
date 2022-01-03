@@ -9,8 +9,8 @@ import {
   FormErrorMessage,
   //   FormHelperText,
 } from '@chakra-ui/react'
-// import { Select } from 'chakra-react-select'
-import Select, { MultiValue } from 'react-select'
+import { Select } from 'chakra-react-select'
+// import { MultiValue } from 'react-select'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -109,10 +109,11 @@ const ProfileForm = (props: FormProps) => {
                 isMulti
                 value={value}
                 options={languageOptions}
-                onChange={(newValue: MultiValue<IOptions>) => {
-                  console.log(newValue)
-                  onChange(newValue)
-                }}
+                onChange={onChange}
+                // onChange={(newValue: any) => {
+                //   console.log(newValue)
+                //   onChange(newValue)
+                // }}
                 closeMenuOnSelect={false}
               />
             )

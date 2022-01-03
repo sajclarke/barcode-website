@@ -16,6 +16,7 @@ import { IProfile } from '../types'
 const ProfileCard = (props: { data: IProfile | undefined }) => {
   // console.log(props.data)
   const { data } = props
+  const buttonColorMode = useColorModeValue('gray.100', 'gray.800')
   return (
     <Box
       w={'25%'}
@@ -63,8 +64,8 @@ const ProfileCard = (props: { data: IProfile | undefined }) => {
             key={skill.label}
             px={2}
             py={1}
-            // bg={useColorModeValue('gray.100', 'gray.800')}
-            bg={'gray.100'}
+            bg={buttonColorMode}
+            // bg={'gray.100'}
             fontWeight={'400'}
           >
             #{skill.value}
