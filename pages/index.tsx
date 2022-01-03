@@ -40,7 +40,7 @@ const Home = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [searchString, setSearchString] = React.useState<string>('')
   const handleFieldChange = (e: React.FormEvent<HTMLInputElement>) => {
-    console.log(e.currentTarget.value)
+    // console.log(e.currentTarget.value)
     setSearchString(e.currentTarget.value)
   }
 
