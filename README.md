@@ -18,10 +18,10 @@ yarn dev
 ## Roadmap
 
 - [x] Configure init NextJS website (with Typescript)
-- [ ] Setup firebase configuration
-- [ ] Add Chakra-UI
-- [ ] Social authentication (Github only)
-- [ ] Membership Profiles
+- [x] Setup firebase configuration
+- [x] Add Chakra-UI
+- [x] Social authentication (Github only)
+- [x] Membership Profiles
 - [ ] Community Projects
 - [ ] Job board
 
