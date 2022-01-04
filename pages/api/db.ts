@@ -12,9 +12,10 @@ import {
   setDoc,
   getDocs,
   getDoc,
+  DocumentData,
   // serverTimestamp,
 } from 'firebase/firestore'
-import { IPost, IUser } from '../../types'
+import { IPost } from '../../types'
 
 import languages from './data/programminglanguages.json'
 
@@ -34,13 +35,13 @@ export const getLanguages = () => {
 export const getAllUsers = async () => {
   try {
     const q = query(collection(firestore, 'users'))
-    const response: IUser[] = []
+    const response: DocumentData[] = []
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       // console.log(doc.id, ' => ', doc.data())
-      const { name, email, photoUrl, provider, skills } = doc.data()
-      response.push({ name, email, photoUrl, provider, skills, uid: doc.id })
+      // const { name, email, photoUrl, provider, skills } = doc.data()
+      response.push({ ...doc.data(), uid: doc.id })
       // res.status(200).json({ ...doc.data() })
     })
 
@@ -87,6 +88,8 @@ export const updateUser = async (
   data: {
     uid: string
     name: string
+    githubUrl?: string
+    linkedInUrl?: string
     skills?: { label: string; value: string }[]
     bio?: string
   }
