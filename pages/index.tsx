@@ -12,21 +12,23 @@ import {
   Flex,
   Wrap,
   Badge,
-  chakra,
+  // chakra,
   useColorModeValue,
-  Link,
+  Icon,
   // Grid,
   Text,
-  // GridItem,
-  // Container,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 
-import { FaWhatsapp } from 'react-icons/fa'
+import { FaGithub, FaLinkedin } from 'react-icons/fa'
 import { getAllUsers } from './api/db'
 import { IUser } from '../types/'
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { res } = context
+  res.setHeader('Cache-Control', `s-maxage=60, stale-while-revalidate`)
   const data = await getAllUsers()
 
   return {
@@ -44,7 +46,11 @@ const Home = ({
   }
 
   const buttonColorMode = useColorModeValue('gray.100', 'gray.800')
-
+  const filteredMembers = members?.filter((f: IUser) =>
+    f.skills?.some((o: { label: string; value: string }) =>
+      o?.value?.toLowerCase().includes(searchString.toLowerCase())
+    )
+  )
   return (
     <div>
       <Head>
@@ -54,7 +60,7 @@ const Home = ({
       </Head>
 
       <main>
-        <Flex
+        {/* <Flex
           direction={{ base: 'column', md: 'row' }}
           justifyContent="space-between"
           alignItems="center"
@@ -74,7 +80,7 @@ const Home = ({
               Join Whatsapp
             </Button>
           </Link>
-        </Flex>
+        </Flex> */}
 
         <Text as="h2" fontSize="3xl" fontWeight="700">
           Members
@@ -93,58 +99,99 @@ const Home = ({
           </InputGroup>
         </Stack>
         <div>
-          {members?.length === 0 ? (
-            <div>
-              <h2>There are no members</h2>
-            </div>
+          {filteredMembers?.length === 0 ? (
+            <Alert status="warning">
+              <AlertIcon />
+              No members match your search criteria
+            </Alert>
           ) : (
-            members
-              ?.filter((f: IUser) =>
-                f.skills?.some((o: { label: string; value: string }) =>
-                  o?.value?.toLowerCase().includes(searchString)
-                )
-              )
-              .map((member: IUser) => {
-                return (
-                  <Flex
-                    key={member.uid}
-                    spacing={4}
-                    direction={{ base: 'column', md: 'row' }}
-                    alignItems="center"
-                    justifyContent={'space-between'}
-                    p={4}
-                    borderBottomWidth={1}
-                  >
-                    <Stack isInline>
-                      <Avatar name={member.name} src={member.photoUrl} />
-                      <Stack>
-                        <Text>{member.name}</Text>
-                        <Text fontWeight="bold">{member.email}</Text>
-                      </Stack>
-                    </Stack>
-                    <Wrap
-                      align={'center'}
-                      justify={'center'}
-                      direction={'row'}
-                      m={2}
-                    >
-                      {member?.skills?.map(
-                        (skill: { label: string; value: string }) => (
-                          <Badge
-                            key={skill.label}
-                            px={2}
-                            py={1}
-                            bg={buttonColorMode}
-                            fontWeight={'400'}
+            filteredMembers?.map((member: IUser) => {
+              return (
+                <Flex
+                  key={member.uid}
+                  spacing={4}
+                  direction={{ base: 'column', md: 'row' }}
+                  alignItems="center"
+                  justifyContent={'space-between'}
+                  p={4}
+                  borderBottomWidth={1}
+                >
+                  <Stack isInline w="full">
+                    <Avatar name={member.name} src={member.photoUrl} />
+                    <Flex alignItems={'center'} direction="column">
+                      <Text as="div" fontWeight={'semibold'}>
+                        {member.name}{' '}
+                        {member.userStatus && (
+                          <Button ml="3" colorScheme="teal" size="xs">
+                            {member.userStatus}
+                          </Button>
+                        )}
+                      </Text>
+                      <Flex
+                        justifyContent={'flex-start'}
+                        gap="4"
+                        w="full"
+                        mt="2"
+                      >
+                        {member.githubUrl && (
+                          <a
+                            href={member.githubUrl}
+                            target="_blank"
+                            rel="noreferrer"
                           >
-                            #{skill.value}
-                          </Badge>
-                        )
-                      )}
-                    </Wrap>
-                  </Flex>
-                )
-              })
+                            <Icon
+                              as={FaGithub}
+                              w={6}
+                              h={6}
+                              color="gray.600"
+                              _hover={{ color: 'teal' }}
+                            />
+                          </a>
+                        )}
+                        {member.linkedInUrl && (
+                          <a
+                            href={member.linkedInUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Icon
+                              as={FaLinkedin}
+                              w={6}
+                              h={6}
+                              color="gray.600"
+                              _hover={{ color: 'teal' }}
+                            />
+                          </a>
+                        )}
+                      </Flex>
+                      {/* <Button colorScheme="teal" size="sm">
+                        Message
+                      </Button> */}
+                    </Flex>
+                  </Stack>
+                  <Wrap
+                    align={'center'}
+                    justify={'center'}
+                    direction={'row'}
+                    m={2}
+                  >
+                    {member?.skills?.map(
+                      (skill: { label: string; value: string }) => (
+                        <Badge
+                          key={skill.label}
+                          px={2}
+                          py={1}
+                          bg={buttonColorMode}
+                          fontWeight={'400'}
+                        >
+                          #{skill.value}
+                        </Badge>
+                      )
+                    )}
+                  </Wrap>
+                </Flex>
+              )
+            })
           )}
         </div>
       </main>

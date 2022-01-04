@@ -26,8 +26,11 @@ const Profile = (props: { userInfo: IProfile }) => {
   const handleSaveProfile = async (data: {
     uid: string
     userName: string
+    userStatus: string
     userSkills?: { label: string; value: string }[]
     userBio?: string
+    githubUrl?: string
+    linkedInUrl?: string
   }) => {
     console.log(data)
     await updateUser(data?.uid, {
@@ -35,6 +38,9 @@ const Profile = (props: { userInfo: IProfile }) => {
       name: data?.userName,
       bio: data?.userBio,
       skills: data?.userSkills,
+      userStatus: data?.userStatus,
+      githubUrl: data?.githubUrl,
+      linkedInUrl: data?.linkedInUrl,
     }).then((res: { message: string } | undefined) => {
       toast({ title: res?.message })
       refreshData()
