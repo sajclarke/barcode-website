@@ -103,7 +103,7 @@ const ProfileForm = (props: FormProps) => {
     value: option,
   }))
 
-  const status = ['Employed', 'Looking for Work', 'Student']
+  const status = ['Employed', 'Freelancing', 'Looking for Work', 'Student']
   const statusOptions = status.map((status) => ({
     label: status,
     value: status,

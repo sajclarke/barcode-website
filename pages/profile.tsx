@@ -26,6 +26,7 @@ const Profile = (props: { userInfo: IProfile }) => {
   const handleSaveProfile = async (data: {
     uid: string
     userName: string
+    userStatus: string
     userSkills?: { label: string; value: string }[]
     userBio?: string
     githubUrl?: string
@@ -37,6 +38,7 @@ const Profile = (props: { userInfo: IProfile }) => {
       name: data?.userName,
       bio: data?.userBio,
       skills: data?.userSkills,
+      userStatus: data?.userStatus,
       githubUrl: data?.githubUrl,
       linkedInUrl: data?.linkedInUrl,
     }).then((res: { message: string } | undefined) => {

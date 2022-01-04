@@ -8,7 +8,7 @@ import {
   InputLeftElement,
   Stack,
   Avatar,
-  // Button,
+  Button,
   Flex,
   Wrap,
   Badge,
@@ -119,8 +119,20 @@ const Home = ({
                   <Stack isInline w="full">
                     <Avatar name={member.name} src={member.photoUrl} />
                     <Flex alignItems={'center'} direction="column">
-                      <Text fontWeight={'semibold'}>{member.name}</Text>
-                      <Flex justifyContent={'space-around'} w="full" mt="2">
+                      <Text as="div" fontWeight={'semibold'}>
+                        {member.name}{' '}
+                        {member.userStatus && (
+                          <Button ml="3" colorScheme="teal" size="xs">
+                            {member.userStatus}
+                          </Button>
+                        )}
+                      </Text>
+                      <Flex
+                        justifyContent={'flex-start'}
+                        gap="4"
+                        w="full"
+                        mt="2"
+                      >
                         {member.githubUrl && (
                           <a
                             href={member.githubUrl}

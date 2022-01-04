@@ -88,6 +88,7 @@ export const updateUser = async (
   data: {
     uid: string
     name: string
+    userStatus: string
     githubUrl?: string
     linkedInUrl?: string
     skills?: { label: string; value: string }[]
