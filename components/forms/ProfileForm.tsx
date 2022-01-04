@@ -22,6 +22,9 @@ type FormValues = {
   uid: string
   userName: string
   userBio: string
+  userStatus: string
+  githubUrl: string
+  linkedInUrl: string
   userSkills: { label: string; value: string }[]
 }
 
@@ -29,6 +32,9 @@ type FormProps = {
   initialValues: {
     uid: string
     name: string
+    userStatus?: string
+    githubUrl?: string
+    linkedInUrl?: string
     skills?: { label: string; value: string }[]
     bio?: string
   }
@@ -47,14 +53,18 @@ const ProfileForm = (props: FormProps) => {
 
   const [languages, setLanguages] = React.useState<string[]>([])
 
-  const { uid, name, bio, skills } = props.initialValues
+  const { uid, name, bio, skills, githubUrl, linkedInUrl, userStatus } =
+    props.initialValues
   const schema = yup.object().shape({
     userName: yup
       .string()
       .min(6, 'Must be at least 6 characters')
       .required('Title is required'),
     userSkills: yup.array().min(1).required('Skills is required'),
+    userStatus: yup.string().required(),
     userBio: yup.string().required('Description is required'),
+    githubUrl: yup.string().url(),
+    linkedInUrl: yup.string().url(),
   })
   const {
     register,
@@ -65,7 +75,14 @@ const ProfileForm = (props: FormProps) => {
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     mode: 'onChange',
-    defaultValues: { userName: name, userBio: bio, userSkills: skills },
+    defaultValues: {
+      userName: name,
+      userBio: bio,
+      userSkills: skills,
+      userStatus,
+      githubUrl,
+      linkedInUrl,
+    },
   })
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     const formData = {
@@ -85,6 +102,13 @@ const ProfileForm = (props: FormProps) => {
     label: option,
     value: option,
   }))
+
+  const status = ['Employed', 'Looking for Work', 'Student']
+  const statusOptions = status.map((status) => ({
+    label: status,
+    value: status,
+  }))
+
   return (
     <VStack w="full" p="6" ml="10" boxShadow={'xl'} rounded={'lg'} spacing="4">
       <FormControl isInvalid={!!errors.userName}>
@@ -93,6 +117,26 @@ const ProfileForm = (props: FormProps) => {
         {errors.userName && (
           <FormErrorMessage>{errors.userName.message}</FormErrorMessage>
         )}
+      </FormControl>
+
+      <FormControl isInvalid={!!errors.userStatus}>
+        <FormLabel htmlFor="userStatus">What is your status?</FormLabel>
+
+        <Controller
+          control={control}
+          name="userStatus"
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Select
+                value={statusOptions.find((c) => c.value === value)}
+                options={statusOptions}
+                onChange={(val: { label: string; value: string }) =>
+                  onChange(val.value)
+                }
+              />
+            )
+          }}
+        />
       </FormControl>
 
       <FormControl isInvalid={!!errors.userSkills}>
@@ -110,15 +154,27 @@ const ProfileForm = (props: FormProps) => {
                 value={value}
                 options={languageOptions}
                 onChange={onChange}
-                // onChange={(newValue: any) => {
-                //   console.log(newValue)
-                //   onChange(newValue)
-                // }}
                 closeMenuOnSelect={false}
               />
             )
           }}
         />
+      </FormControl>
+
+      <FormControl isInvalid={!!errors.githubUrl}>
+        <FormLabel htmlFor="githubUrl">Github Profile</FormLabel>
+        <Input {...register('githubUrl')} />
+        {errors.githubUrl && (
+          <FormErrorMessage>{errors.githubUrl.message}</FormErrorMessage>
+        )}
+      </FormControl>
+
+      <FormControl isInvalid={!!errors.linkedInUrl}>
+        <FormLabel htmlFor="linkedInUrl">LinkedIn Profile</FormLabel>
+        <Input {...register('linkedInUrl')} />
+        {errors.linkedInUrl && (
+          <FormErrorMessage>{errors.linkedInUrl.message}</FormErrorMessage>
+        )}
       </FormControl>
 
       <FormControl isInvalid={!!errors.userBio}>

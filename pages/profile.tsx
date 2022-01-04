@@ -28,6 +28,8 @@ const Profile = (props: { userInfo: IProfile }) => {
     userName: string
     userSkills?: { label: string; value: string }[]
     userBio?: string
+    githubUrl?: string
+    linkedInUrl?: string
   }) => {
     console.log(data)
     await updateUser(data?.uid, {
@@ -35,6 +37,8 @@ const Profile = (props: { userInfo: IProfile }) => {
       name: data?.userName,
       bio: data?.userBio,
       skills: data?.userSkills,
+      githubUrl: data?.githubUrl,
+      linkedInUrl: data?.linkedInUrl,
     }).then((res: { message: string } | undefined) => {
       toast({ title: res?.message })
       refreshData()

@@ -15,6 +15,8 @@ export interface IUser {
   name: string
   provider: string
   photoUrl: string
+  githubUrl?: string
+  linkedInUrl?: string
   skills?: { label: string; value: string }[]
 }
 
@@ -24,6 +26,9 @@ export interface IProfile {
   name: string
   provider: string
   photoUrl: string
+  userStatus?: string
+  githubUrl?: string
+  linkedInUrl?: string
   bio?: string
   skills?: { label: string; value: string }[]
 }
